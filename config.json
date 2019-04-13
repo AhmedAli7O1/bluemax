@@ -1,0 +1,14 @@
+{
+  "supportedFileTypes": [
+    ".js",
+    ".json"
+  ],
+  "logger": {
+    "prefix": {
+      "info": "[INFO]:",
+      "debug": "[DEBUG]:",
+      "error": "[ERROR]:",
+      "warn": "[WARN]:"
+    }
+  }
+}

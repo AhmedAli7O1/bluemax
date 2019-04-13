@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/bluemaxjs/bluemax/issues"
   },
-  "homepage": "https://github.com/bluemaxjs/bluemax#readme"
+  "homepage": "https://github.com/bluemaxjs/bluemax#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.3"
+  }
 }

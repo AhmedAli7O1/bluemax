@@ -33,13 +33,13 @@ async function start() {
   const controllersList = await controllers.load(controllersPath);
   logger.debug("controllersList", controllersList);
 
-  const routesList = await routes.load(routesPath);
-  logger.debug("routesList", routesList);
+  const routeGroups = await routes.load(routesPath);
+  logger.debug("routeGroups", routeGroups);
 
-  routes.assignHandlers(routesList, controllersList);
-  logger.debug("routesList after assign", routesList);
+  routes.assignHandlers(routeGroups, controllersList);
+  logger.debug("routeGroups after assign", routeGroups);
 
-  router.register(routesList);
+  router.register(routeGroups);
 
   return await serverCreator(router.requestListener, userConfig.server);
 }

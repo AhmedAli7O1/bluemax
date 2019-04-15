@@ -172,19 +172,22 @@ function match (method, urlPath) {
   return routeInfo;
 }
 
-function register (routesConfig = []) {
-  routesConfig.forEach(routeConf => {
+function register (routeGroups = {}) {
+  for (const routeGroupName in routeGroups) {
+    if (routeGroups.hasOwnProperty(routeGroupName)) {
+      routeGroups[routeGroupName].forEach(routeInfo => {
+        const keys = [];
+        const rgx = tokensToRegExp(parse(routeInfo.path), keys);
 
-    const keys = [];
-    const rgx = tokensToRegExp(parse(routeConf.path), keys);
-
-    routes.push({
-      rgx,
-      keys,
-      handler: routeConf.handler,
-      method: routeConf.method
-    });
-  });
+        routes.push({
+          rgx,
+          keys,
+          handler: routeInfo.handler,
+          method: routeInfo.method
+        });
+      });
+    }
+  }
 }
 
 function requestListener (request, response) {

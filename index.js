@@ -22,6 +22,7 @@ const config = require("./lib/config");
 const logger = require("./lib/logger");
 const serverCreator = require("./lib/server");
 const convention = require("./lib/convention");
+const requestListener = require("./lib/listener");
 
 const appPath = process.cwd();
 
@@ -54,7 +55,7 @@ async function start() {
 
     router.register(routeGroups);
 
-    return await serverCreator(router.requestListener, userConfig.server);
+    return await serverCreator(requestListener, userConfig.server);
   }
   catch (e) {
     logger.error(e.message);

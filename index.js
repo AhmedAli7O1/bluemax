@@ -1,17 +1,5 @@
 "use strict";
 
-/*
- * 1 - Http Server
- * 2 - Security Handler
- * 3 - Request Handler
- * 4 - Router
- * 5 - Routes
- * 6 - Authentication
- * 7 - Controllers
- * 8 - Components
- * 9 - Models
- */
-
 
 const fs = require("./lib/fs");
 const path = require("path");
@@ -37,21 +25,18 @@ async function start() {
   try {
     logger.info(`Scanning APP Directory - ${paths.appPath}`);
     const appDirInfo = await fs.getDeepDirContent(paths.appPath);
+
     fs.setRelativePath(appDirInfo, paths.appPath);
 
     convention.scan(appDirInfo, paths);
 
     const userConfig = await config(paths.configPath, "development");
-    // logger.debug("userConfig", userConfig);
 
     const controllersList = await controllers.load(paths.controllersPath);
-    // logger.debug("controllersList", controllersList);
 
     const routeGroups = await routes.load(paths.routesPath);
-    // logger.debug("routeGroups", routeGroups);
 
     routes.assignHandlers(routeGroups, controllersList);
-    // logger.debug("routeGroups after assign", routeGroups);
 
     router.register(routeGroups);
 

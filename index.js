@@ -21,19 +21,29 @@ const paths = {
   controllersPath: path.join(appPath, "controllers")
 };
 
+const nodeEnv = process.env.NODE_ENV || "development";
+
 async function start() {
   try {
+    logger.info(`Starting BlueMaxJS Server Instance`);
+
+    logger.info(`Setting environment to ${nodeEnv}`);
+
     logger.info(`Scanning APP Directory - ${paths.appPath}`);
     const appDirInfo = await fs.getDeepDirContent(paths.appPath);
 
     fs.setRelativePath(appDirInfo, paths.appPath);
 
+    logger.info(`Conventions check`);
     convention.scan(appDirInfo, paths);
 
+    logger.info(`Loading environment configurations from ${paths.configPath}`);
     const userConfig = await config(paths.configPath, "development");
 
+    logger.info(`Loading controllers from ${paths.controllersPath}`);
     const controllersList = await controllers.load(paths.controllersPath);
 
+    logger.info(`Loading routes from ${paths.routesPath}`);
     const routeGroups = await routes.load(paths.routesPath);
 
     routes.assignHandlers(routeGroups, controllersList);

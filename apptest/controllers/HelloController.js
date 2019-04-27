@@ -1,7 +1,15 @@
 "use strict";
 
+const Test = require("../components/Test");
+
+// error on load
+// console.log(lol.koko);
 
 function getAllHello (req, res) {
+
+  // runtime error
+  console.log(req.lol.pp);
+
   res
     .status(200)
     .json({ fn: "getAllHello" });

@@ -39,7 +39,7 @@ async function start() {
     const nodeEnv = setEnv({}, internalConfig.defaults);
 
     logger.info(`Loading environment configurations from ${paths.configPath}`);
-    const userConfig = await config(paths.configPath, nodeEnv);
+    const appConfig = await config(paths.configPath, nodeEnv);
 
     logger.info(`Loading controllers from ${paths.controllersPath}`);
     const controllersList = await controllers.load(paths.controllersPath);
@@ -51,7 +51,7 @@ async function start() {
 
     router.register(routeGroups);
 
-    return await serverCreator(requestListener, userConfig.server);
+    return await serverCreator(requestListener, appConfig.server);
   }
   catch (e) {
     logger.error(e.message);

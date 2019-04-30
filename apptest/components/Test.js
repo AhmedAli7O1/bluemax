@@ -1,2 +1,2 @@
 // error on load
-console.log(lol.koko);
+// console.log(lol.koko);

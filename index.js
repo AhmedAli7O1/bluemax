@@ -12,6 +12,7 @@ const serverCreator = require("./lib/server");
 const convention = require("./lib/convention");
 const requestListener = require("./lib/listener");
 const { setEnv } = require("./lib/env");
+const internalConfig = require("./config.json");
 
 const appPath = process.cwd();
 
@@ -34,7 +35,8 @@ async function start() {
     logger.info(`Conventions check`);
     convention.scan(appDirInfo, paths);
 
-    const nodeEnv = setEnv({}, {});
+    // TODO: replace the first arg with the app args
+    const nodeEnv = setEnv({}, internalConfig.defaults);
 
     logger.info(`Loading environment configurations from ${paths.configPath}`);
     const userConfig = await config(paths.configPath, nodeEnv);

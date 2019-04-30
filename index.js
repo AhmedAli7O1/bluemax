@@ -11,6 +11,7 @@ const logger = require("./lib/logger");
 const serverCreator = require("./lib/server");
 const convention = require("./lib/convention");
 const requestListener = require("./lib/listener");
+const { setEnv } = require("./lib/env");
 
 const appPath = process.cwd();
 
@@ -21,13 +22,9 @@ const paths = {
   controllersPath: path.join(appPath, "controllers")
 };
 
-const nodeEnv = process.env.NODE_ENV || "development";
-
 async function start() {
   try {
     logger.info(`Starting BlueMaxJS Server Instance`);
-
-    logger.info(`Setting environment to ${nodeEnv}`);
 
     logger.info(`Scanning APP Directory - ${paths.appPath}`);
     const appDirInfo = await fs.getDeepDirContent(paths.appPath);
@@ -37,8 +34,10 @@ async function start() {
     logger.info(`Conventions check`);
     convention.scan(appDirInfo, paths);
 
+    const nodeEnv = setEnv({}, {});
+
     logger.info(`Loading environment configurations from ${paths.configPath}`);
-    const userConfig = await config(paths.configPath, "development");
+    const userConfig = await config(paths.configPath, nodeEnv);
 
     logger.info(`Loading controllers from ${paths.controllersPath}`);
     const controllersList = await controllers.load(paths.controllersPath);

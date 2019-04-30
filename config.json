@@ -1,4 +1,7 @@
 {
+  "defaults": {
+    "env": "development"
+  },
   "supportedFileTypes": [
     ".js",
     ".json"

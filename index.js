@@ -8,9 +8,8 @@ const routes = require("./lib/routes");
 const controllers = require("./lib/controllers");
 const config = require("./lib/config");
 const logger = require("./lib/logger");
-const serverCreator = require("./lib/server");
+const Server = require("./lib/server");
 const convention = require("./lib/convention");
-const requestListener = require("./lib/listener");
 const { setEnv } = require("./lib/env");
 const internalConfig = require("./config.json");
 
@@ -51,7 +50,10 @@ async function start() {
 
     router.register(routeGroups);
 
-    return await serverCreator(requestListener, appConfig.server);
+    const server = new Server();
+    await server.start(appConfig.server);
+
+    return server;
   }
   catch (e) {
     logger.error(e.message);
@@ -60,5 +62,8 @@ async function start() {
 
 }
 
-module.exports = start;
+module.exports = {
+  logger,
+  start
+};
 

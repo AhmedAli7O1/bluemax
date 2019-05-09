@@ -3,7 +3,6 @@
 
 const fs = require("./lib/fs");
 const path = require("path");
-const router = require("./lib/router");
 const routes = require("./lib/routes");
 const controllers = require("./lib/controllers");
 const config = require("./lib/config");
@@ -12,6 +11,10 @@ const Server = require("./lib/server");
 const convention = require("./lib/convention");
 const { setEnv } = require("./lib/env");
 const internalConfig = require("./config.json");
+const Router = require("./lib/router");
+const Listener = require("./lib/listener");
+const IncomingMessage = require("./lib/request");
+const ServerResponse = require("./lib/response");
 
 const appPath = process.cwd();
 
@@ -48,9 +51,26 @@ async function start() {
 
     routes.assignHandlers(routeGroups, controllersList);
 
-    router.register(routeGroups);
+    const router = new Router();
 
-    const server = new Server();
+    Array.from(...Object.values(routeGroups)).forEach(x => {
+      router.register(x.method, x.path, x.handler);
+    });
+
+    const routerMatch = router.match.bind(router);
+
+    const listener = new Listener(routerMatch);
+
+    const requestListener = listener.requestListener.bind(listener);
+
+    const server = new Server(
+      {
+        IncomingMessage,
+        ServerResponse
+      },
+      requestListener
+    );
+
     await server.start(appConfig.server);
 
     return server;

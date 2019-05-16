@@ -57,6 +57,7 @@ async function start() {
       router.register(x.method, x.path, x.handler);
     });
 
+
     const routerMatch = router.match.bind(router);
 
     const listener = new Listener(routerMatch);
